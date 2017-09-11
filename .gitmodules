@@ -1,3 +1,0 @@
-[submodule "2017_KR1/externals/pycosat"]
-	path = 2017_KR1/externals/pycosat
-	url = https://github.com/ContinuumIO/pycosat.git
