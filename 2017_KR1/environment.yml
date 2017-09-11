@@ -1,7 +1,0 @@
-name: kr
-channels:
-- defaults
-dependencies:
-- python=3.6.2
-- pycosat=0.6.2
-
