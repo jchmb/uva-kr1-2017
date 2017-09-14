@@ -89,3 +89,21 @@ class Sudoku3D:
 				out = map(str, position + (d,))
 				f.write(" ".join(out))
 				f.write('\n')
+
+	'''
+	Load the Sudoku3D from a given file.
+	@param string filename
+	@return Sudoku3D
+	'''
+	@staticmethod
+	def load(filename):
+		sudoku = Sudoku3D()
+		with open(filename, 'r') as f:
+			for line in f:
+				parts = line.split()
+				x = int(parts[0])
+				y = int(parts[1])
+				z = int(parts[2])
+				d = int(parts[3])
+				sudoku.fill(x, y, z, d)
+		return sudoku
