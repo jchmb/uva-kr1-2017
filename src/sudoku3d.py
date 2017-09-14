@@ -10,20 +10,59 @@ class Sudoku3D:
 		self.dim = dim
 		self.cells = {}
 
+	'''
+	Check if the given cell (x, y, z) is filled.
+	@param int x
+	@param int y
+	@param int z
+	@return bool
+	'''
 	def isPresent(self, x, y, z):
 		return (x, y, z) in self.cells
 
+	'''
+	Get the contents of a cell (x, y, z).
+	@param int x
+	@param int y
+	@param int z
+	@return int the value (digit) of the cell
+	'''
 	def get(self, x, y, z):
 		return self.cells[(x, y, z)]
 
+	'''
+	Fill the given cell (x, y, z) with the given value (digit) d.
+	@param int x
+	@param int y
+	@param int z
+	@param int d
+	'''
 	def fill(self, x, y, z, d):
 		self.cells[(x, y, z)] = d
 
+	'''
+	Check if the given cell (x, y, z) can contain the given value (digit) d
+	without violating the Sudoku3D rules.
+	@param int x
+	@param int y
+	@param int z
+	@param int d
+	@return bool
+	'''
 	def isValid(self, x, y, z, d):
 		return self.isValidForDim(0, x, y, z, d) and \
 			self.isValidForDim(1, x, y, z, d) and \
 			self.isValidForDim(2, x, y, z, d)
 
+	'''
+	Check for the given dimension dim, if the given cell (x, y, z) can
+	contain the given value (digit) d without violating the Sudoku3D rules.
+	@param int x
+	@param int y
+	@param int z
+	@param int d
+	@return bool
+	'''
 	def isValidForDim(self, dim, x, y, z, d):
 		for i in range(self.dim):
 			position = [x, y, z]
@@ -33,9 +72,17 @@ class Sudoku3D:
 				return False
 		return True
 
+	'''
+	The total number of filled cells.
+	@return int
+	'''
 	def size(self):
 		return len(self.cells)
 
+	'''
+	Save this Sudoku3D to the given file.
+	@param string filename
+	'''
 	def save(self, filename):
 		with open(filename, 'w+') as f:
 			for position, d in self.cells.items():
