@@ -1,0 +1,28 @@
+\documentclass[11pt]{article}
+%Gummi|065|=)
+\usepackage{mathtools,amsmath,amsfonts}
+\title{\textbf{Sudoku3D Propositional Logic Representation Notes}}
+\author{Jochem Barelds}
+\date{}
+\begin{document}
+
+\maketitle
+
+A 3D sudoku is an $N \times N \times N$ structure (with $N \in \mathbb{N}$), where every row, colum and layer needs to contain exactly one digit $d \in \{1, \hdots, N\}$. A single row, column or layer may not use the same digit more than once. This can be expressed as (TODO: reference to Weber):
+
+\begin{align}
+	\text{valid}(x_1, \hdots, x_N) := \bigwedge_{d=1}^{N} \bigvee_{i=1}^{N} \bigwedge_{1 \leq d \leq d' \leq N} \neg x_i^{d} \vee \neg x_i^{d'} 
+\end{align}
+
+Then the constraints of the sudoku can be represented as:
+
+TODO: resolve inconsistent representations of $x_i$ and $x_{i,j,k}$.
+
+\begin{align}
+\begin{split}
+	\text{sudoku}(\{x_{i,j,k}\}) := \bigwedge_{k=1}^{N} (\bigwedge_{i=1}^{N} \text{valid}(x_{i,1,k}, \hdots, x_{i,N,k}) \wedge \bigwedge_{j=1}^{N} \text{valid}(x_{1,j,k}, \hdots, x_{N,j,k})) \\
+	\wedge \bigwedge_{j=1}^{N} (\bigwedge_{k=1}^{N} \text{valid}(x_{1,j,k}, \hdots, x_{N,j,k}) \wedge \bigwedge_{i=1}^{N} \text{valid}(x_{i,j,1}, \hdots, x_{i,j,N}))
+\end{split}
+\end{align}
+
+\end{document}
