@@ -25,7 +25,3 @@ class Sudoku3DGenerator:
 	def generate(self):
 		for i in range(self.k):
 			self.fillCell()
-
-gen = Sudoku3DGenerator(10)
-gen.generate()
-gen.sudoku.save('test.txt')
