@@ -1,4 +1,11 @@
+'''
+Sudoku3D class. Encapsulates a 3D sudoku of size N*N*N.
+'''
 class Sudoku3D:
+	'''
+	Constructor.
+	@param int dim the dimensionality N of the Sudoku3D
+	'''
 	def __init__(self, dim=9):
 		self.dim = dim
 		self.cells = {}
