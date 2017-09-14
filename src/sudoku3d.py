@@ -13,8 +13,8 @@ class Sudoku3D:
 		self.cells[(x, y, z)] = d
 
 	def isValid(self, x, y, z, d):
-		return self.isValidForDim(0, x, y, z, d) and
-			self.isValidForDim(1, x, y, z, d) and
+		return self.isValidForDim(0, x, y, z, d) and \
+			self.isValidForDim(1, x, y, z, d) and \
 			self.isValidForDim(2, x, y, z, d)
 
 	def isValidForDim(self, dim, x, y, z, d):
@@ -31,6 +31,7 @@ class Sudoku3D:
 
 	def save(self, filename):
 		with open(filename, 'w+') as f:
-			for position, d in self.cells:
-				f.write(" ".join(position + (d,)))
+			for position, d in self.cells.items():
+				out = map(str, position + (d,))
+				f.write(" ".join(out))
 				f.write('\n')

@@ -7,16 +7,25 @@ class Sudoku3DGenerator:
 		self.k = k
 		self.maxSize = dim**3
 
+	def randomDigit(self):
+		return random.randint(1, self.sudoku.dim)
+
 	def fillCell(self):
 		if self.maxSize == self.sudoku.size():
 			pass
-		x = random.choice(self.sudoku.dim)
-		y = random.choice(self.sudoku.dim)
-		z = random.choice(self.sudoku.dim)
-		d = random.choice(self.sudoku.dim)
+		x = self.randomDigit()
+		y = self.randomDigit()
+		z = self.randomDigit()
+		d = self.randomDigit()
 		if self.sudoku.isPresent(x, y, z) or not self.sudoku.isValid(x, y, z, d):
 			self.fillCell()
+		else:
+			self.sudoku.fill(x, y, z, d)
 
 	def generate(self):
 		for i in range(self.k):
 			self.fillCell()
+
+gen = Sudoku3DGenerator(10)
+gen.generate()
+gen.sudoku.save('test.txt')
