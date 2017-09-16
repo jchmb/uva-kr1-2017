@@ -80,9 +80,9 @@ class Sudoku3D:
 
 	def unfilledPositions(self):
 		unfilledPositions = []
-		for x in range(1, 4):
-			for y in range(1, 4):
-				for z in range(1, 4):
+		for x in range(1, self.size + 1):
+			for y in range(1, self.size + 1):
+				for z in range(1, self.size + 1):
 					if not self.isPresent(x, y, z):
 						unfilledPositions.append((x, y, z))
 

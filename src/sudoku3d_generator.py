@@ -40,7 +40,7 @@ class Sudoku3DGenerator:
     Generate the Sudoku3D.
     @return Sudoku3D
     '''
-    def generate(self, maxTries=10000):
+    def generate(self, maxTries=10000000):
 
         tries = 1
         while tries <= maxTries:

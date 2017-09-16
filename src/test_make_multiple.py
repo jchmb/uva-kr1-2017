@@ -3,7 +3,7 @@ from sudoku3d_generator import Sudoku3DGenerator
 
 print('%s\t%s\t%s\t%s\t%s' % ('size', 'k', 'ratio', 'tries', 'exectime'))
 
-max_tries = 4000
+max_tries = 8000
 for size in range(3, 10):
     for percentage in [.2, .3, .4, .5, .6, .7, .8, .9]:
         cells = size ** 3

@@ -2,8 +2,8 @@ from sudoku3d_generator import Sudoku3DGenerator
 from sudoku3d import Sudoku3D
 
 
-k = 20
 size = 4
+k = size**3 - 1
 gen = Sudoku3DGenerator(k, size)
 
 sudoku, tries = gen.generate()
