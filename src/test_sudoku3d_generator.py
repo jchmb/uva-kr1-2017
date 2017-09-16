@@ -1,8 +1,16 @@
 from sudoku3d_generator import Sudoku3DGenerator
 from sudoku3d import Sudoku3D
 
-gen = Sudoku3DGenerator(10)
-gen.generate()
-gen.sudoku.save('/tmp/sudoku3d_test.txt')
-sudoku = Sudoku3D.load('/tmp/sudoku3d_test.txt')
-sudoku.save('/tmp/sudoku3d_test_loaded_then_saved.txt')
+
+k = 20
+size = 4
+gen = Sudoku3DGenerator(k, size)
+
+sudoku, tries = gen.generate()
+
+fileName = '/tmp/sudoku3d_test_%d_%d.txt' % (k, size)
+sudoku.save(fileName)
+sudoku = Sudoku3D.load(fileName, size)
+
+print('Sudoku generated, took %d tries' % tries)
+print(sudoku)
