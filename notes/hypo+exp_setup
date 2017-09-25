@@ -1,0 +1,12 @@
+Hypothesis:
+The complexity of the puzzle grows exponentially as N grows
+
+Experimental Setup
+complexity = Decsion + conflicts.. 
+
+N grootte
+M number of givens
+
+Experimental Results:
+Tabel:
+N M M/N | Decisions Conflicts Restarts Cputime #clauses #literals #cl/#li

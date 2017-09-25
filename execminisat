@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+ ./MiniSat_v1.14_linux "$1" "$1_out" | grep ':' | sed 's/.*: //' | cut -d ' ' -f 1
+
