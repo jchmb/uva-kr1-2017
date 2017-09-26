@@ -4,7 +4,8 @@ from sudoku3d import Sudoku3D
 
 size = 3
 k = size**3 - 1
-gen = Sudoku3DGenerator(size, k)
+# k = int(size**3 / 2)
+gen = Sudoku3DGenerator(size, k, 50, 1000)
 
 sudoku = gen.generate()
 tries = 0 # TODO: what do with this?

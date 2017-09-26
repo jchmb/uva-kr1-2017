@@ -1,9 +1,9 @@
+import sys
+
 class Sudoku3D:
 	def __init__(self, N):
 		self.N = N
 		self.cells = [set(range(1, N+1)) for i in range(N**3)]
-		self.filledCells = 0
-		self.unfilledCells = self.N**3
 
 	def getCellIterator(self):
 		return ((x, y, z) for x in range(self.N) for y in range(self.N) for z in range(self.N))
@@ -16,6 +16,7 @@ class Sudoku3D:
 
 	def validForDim(self, dim, x, y, z, d):
 		origin = (x, y, z)
+		possibleConflicts = []
 		for i in range(self.N):
 			pos = [x, y, z]
 			pos[dim] = i
@@ -23,8 +24,12 @@ class Sudoku3D:
 
 			# If filling in d at (x, y, z) causes pos to be invalid,
 			# then it is not a valid action.
-			if pos != origin and (self.get(*pos) - set([d])) == set():
-				return False
+			updatedCell = self.get(*pos) - set([d])
+			if pos != origin:
+				if updatedCell == set() or updatedCell in possibleConflicts:
+					return False
+				elif len(updatedCell) == 1: # TODO: might need revision
+					possibleConflicts.append(updatedCell)
 		return True
 
 	def validForCell(self, x, y, z, d):
@@ -34,21 +39,36 @@ class Sudoku3D:
 			self.validForDim(1, x, y, z, d) and \
 			self.validForDim(2, x, y, z, d)
 
+	def prunePossibilities(self, dim, x, y, z, d):
+		origin = (x, y, z)
+		for i in range(self.N):
+			pos = [x, y, z]
+			pos[dim] = i
+			pos = tuple(pos)
+			if pos != origin:
+				self.cells[self.getCellIndex(*pos)] -= set([d])
+
+	def getUnfilledCells(self):
+		return [position for position in self.getCellIterator() if not self.isFilled(*position)]
+
 	def isFilled(self, x, y, z):
 		return len(self.get(x, y, z)) == 1
 
 	def fill(self, x, y, z, d):
-		if not self.validForCell(x, y, z, d) or self.isFilled(x, y, z):
+		if self.isFilled(x, y, z) or not self.validForCell(x, y, z, d):
 			return False
 		self.cells[self.getCellIndex(x, y, z)] &= set([d])
-		self.filledCells += 1
-		self.unfilledCells -= 1
+		self.prunePossibilities(0, x, y, z, d)
+		self.prunePossibilities(1, x, y, z, d)
+		self.prunePossibilities(2, x, y, z, d)
 		return True
 
 	def __str__(self):
+		unfilledCellsCount = len(self.getUnfilledCells())
+		filledCellsCount = self.N**3 - unfilledCellsCount
 		returnStr = 'Sudoku of size %d\n' % (self.N)
 		returnStr += '%d cells of which %d filled (%d unfilled)\n\n' % \
-			(self.N**3, self.filledCells, self.unfilledCells)
+			(self.N**3, filledCellsCount, unfilledCellsCount)
 		for x in range(self.N):
 			returnStr += 'x=' + str(x) + '\n'
 			for y in range(self.N):
