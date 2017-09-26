@@ -11,7 +11,7 @@ class DimecsSolver:
         self.dir = directory
 
     def solve_single(self, filename):
-        p = subprocess.Popen(['minisat %s/%s %s/out/%st' % (self.dir, filename,
+        p = subprocess.Popen(['minisat %s/%s %s/out/%s' % (self.dir, filename,
                              self.dir, filename)], shell=True,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output = p.communicate()
@@ -28,6 +28,9 @@ class DimecsSolver:
     def solve_all_in_dir(self):
         files = [f for f in listdir(self.dir) if isfile(join(self.dir, f))]
         return self.solve_multiple(files)
+
+    def apply_solution(self, sudoku, filename):
+        return
 
 
 class DimecsSolverOutputParser:

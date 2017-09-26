@@ -17,6 +17,12 @@ class Sudoku3D:
 		self.unfilledCells = size**3
 		self.filledCells = 0
 
+	def all_positions(self):
+		for x in range(1, self.size + 1):
+			for y in range(1, self.size + 1):
+				for z in range(1, self.size + 1):
+					yield (x, y, z)
+
 	'''
 	Check if the given cell (x, y, z) is filled.
 	@param int x
@@ -45,13 +51,16 @@ class Sudoku3D:
 	@param int d
 	'''
 	def fill(self, x, y, z, d, checkValid=False):
+		x = int(x)
+		y = int(y)
+		z = int(z)
 		if checkValid and not self.isValid(x, y, z, d):
 			raise Exception('Invalid digit %d in cell (%d, %d, %d)' % (d, x, y, z))
 
 		if not self.isPresent(x, y, z):
 			self.filledCells += 1
 			self.unfilledCells -= 1
-			self.cells[(x, y, z)] = d
+			self.cells[(x, y, z)] = int(d)
 
 	'''
 	Unfill the given cell (x, y, z) with the given value (digit) d.
