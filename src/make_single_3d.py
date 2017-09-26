@@ -1,11 +1,11 @@
-from sudoku3d_generator import Sudoku3DGenerator
+from sudoku3d_alt_generator import Sudoku3DAlternativeGenerator
 from sudoku3d import Sudoku3D
 
 
 size = 3
 k = size**3 - 1
 # k = int(size**3 / 2)
-gen = Sudoku3DGenerator(size, k, 50, 1000)
+gen = Sudoku3DAlternativeGenerator(size, k)#, 50, 1000)
 
 sudoku = gen.generate()
 tries = 0 # TODO: what do with this?
