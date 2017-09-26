@@ -56,7 +56,7 @@ class Sudoku3D:
 			# then it is not a valid action.
 			updatedCell = self.get(*pos) - set([d])
 			if pos != origin:
-				if updatedCell == set() or not self.atLeastOnce(dim, *pos, d):
+				if updatedCell == set():# or not self.atLeastOnce(dim, *pos, d):
 					return False
 		return True
 
