@@ -2,7 +2,7 @@ import random
 from sudoku3d import Sudoku3D
 
 class Sudoku3DGenerator:
-	def __init__(self, N, M, tries=50, restarts=50):
+	def __init__(self, N, M, tries=50, restarts=1000000):
 		self.N = N
 		self.M = M
 		self.tries = tries

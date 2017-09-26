@@ -14,9 +14,39 @@ class Sudoku3D:
 	def get(self, x, y, z):
 		return self.cells[self.getCellIndex(x, y, z)]
 
+	def getLineIterator(self, dim, x, y, z, excludeOrigin=False):
+		origin = (x, y, z)
+		for i in range(self.N):
+			pos = [x, y, z]
+			pos[dim] = i
+			pos = tuple(pos)
+			if not excludeOrigin or pos != origin:
+				yield pos
+
+	def atLeastOnce(self, dim, x, y, z, withoutD):
+		for d in range(self.N):
+			count = 0
+			for pos in self.getLineIterator(dim, x, y, z):
+				cell = self.get(*pos) - set([withoutD])
+				if d in cell:
+					count += 1
+			if count < 1:
+				return False
+		return True
+
+	def atMostOnce(self, dim, x, y, z, withoutD):
+		for d in range(self.N):
+			count = 0
+			for pos in self.getLineIterator(dim, x, y, z):
+				cell = self.get(*pos) - set([withoutD])
+				if d in cell:
+					count += 1
+					if count > 1:
+						return False
+		return True
+
 	def validForDim(self, dim, x, y, z, d):
 		origin = (x, y, z)
-		possibleConflicts = []
 		for i in range(self.N):
 			pos = [x, y, z]
 			pos[dim] = i
@@ -26,10 +56,8 @@ class Sudoku3D:
 			# then it is not a valid action.
 			updatedCell = self.get(*pos) - set([d])
 			if pos != origin:
-				if updatedCell == set() or updatedCell in possibleConflicts:
+				if updatedCell == set() or not self.atLeastOnce(dim, *pos, d):
 					return False
-				elif len(updatedCell) == 1: # TODO: might need revision
-					possibleConflicts.append(updatedCell)
 		return True
 
 	def validForCell(self, x, y, z, d):
