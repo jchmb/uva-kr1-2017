@@ -1,4 +1,6 @@
+## Overview
 
-Execute MiniSat, parse output.
- ./MiniSat_v1.14_linux sudoku.cnf sudoku.cnf_out | grep ':' | sed 's/.*: //' | cut -d ' ' -f 1
+sudoku3d_generator: Generate a new sudoku, save it in sudokus (or test_sudokus)
+sudoku3d_dimecs_converter: Read a sudoku from a file (in sudokus or test_sudoku), convert to dimecs and save in (test_)sudokus_dimecs
+sudoku3d_dimecs_solver: Execute Minisat for file(s), parse results and save in experimental_results
 
