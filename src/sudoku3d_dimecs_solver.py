@@ -16,7 +16,7 @@ class DimecsSolver:
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output = p.communicate()
         output = output[0].decode('ascii')
-        return DimecsSolverOutputParser(output)
+        return DimecsSolverOutputParser(filename, output)
 
     def solve_multiple(self, filenames):
         res = []
@@ -32,11 +32,12 @@ class DimecsSolver:
 
 class DimecsSolverOutputParser:
 
-    def __init__(self, output):
-        self.reset(output)
+    def __init__(self, name, output):
+        self.reset(name, output)
 
-    def reset(self, output, parse=True):
+    def reset(self, name, output, parse=True):
         self.raw_output = output
+        self.name = name
         self.parsed_data = {}
 
         if(parse):
@@ -54,30 +55,36 @@ class DimecsSolverOutputParser:
         for f in find:
             reg, key = f
             res = re.search(reg + r'\s*: (\d*)', self.raw_output)
-            self.parsed_data[key] = res.group(1)
+            self.parsed_data[key] = int(res.group(1))
 
         res = re.search(r'CPU time\s*: (.*) s', self.raw_output)
-        self.parsed_data['cpu_time'] = res.group(1)
+        self.parsed_data['cpu_time'] = float(res.group(1))
 
         res = re.search(r'Number of clauses:\s*(\d*)', self.raw_output)
-        self.parsed_data['clauses'] = res.group(1)
+        self.parsed_data['clauses'] = int(res.group(1))
 
         res = re.search(r'Number of variables:\s*(\d*)', self.raw_output)
-        self.parsed_data['variables'] = res.group(1)
+        self.parsed_data['variables'] = int(res.group(1))
 
     def __str__(self):
-        res = pprint.pformat(self.parsed_data)
+        res = self.name
+        res += pprint.pformat(self.parsed_data)
         return res
 
 
 def TestDimecsSolver():
     solvers = DimecsSolver('../test_sudokus_dimecs')
 
-    # res1 = [solvers.solve_single('test')]
-    # res1 = solvers.solve_multiple(['simple', 'simple_un'])
-    res1 = solvers.solve_all_in_dir()
+    test = solvers.solve_single('test')
+    testUnsat = solvers.solve_single('simple_un')
+    testSat = solvers.solve_single('simple')
 
-    for a in res1:
-        print(a)
+    assert testSat.parsed_data['sat'] is True
+    assert testUnsat.parsed_data['sat'] is False
+    assert test.parsed_data['sat'] is True
+    assert test.parsed_data['clauses'] == 44061
+    assert test.parsed_data['propagations'] == 1310689
+    assert test.parsed_data['restarts'] == 15
 
-TestDimecsSolver()
+
+# TestDimecsSolver()
