@@ -50,7 +50,7 @@ class DimecsRepresentaion:
         self.comments.append(comments)
 
     def add_clause_neg(self, clause, comments=None):
-        clause = list(map(lambda x: x *- 1, clause))
+        clause = list(map(lambda x: x * -1, clause))
         self.add_clause(clause, comments)
 
     def add_single_var(self, var, comments=None):
@@ -71,7 +71,7 @@ class DimecsRepresentaion:
 
         for (clause, comment) in zip(self.clauses, self.comments):
             if comment is not None and comments:
-                dimecs += 'c '+ comment + '\n'
+                dimecs += 'c ' + comment + '\n'
             for var in clause:
                 dimecs += str(var) + ' '
             dimecs += '0\n'
@@ -83,7 +83,7 @@ class DimecsRepresentaion:
 
         for (clause, comment) in zip(self.clauses, self.comments):
             if comment is not None and comments:
-                dimecs += 'c '+ comment + '\n'
+                dimecs += 'c ' + comment + '\n'
             for var in clause:
                 dimecs += converter.rev_convert(var) + ' '
             dimecs += '0\n'
