@@ -47,6 +47,7 @@ class DimecsSolverOutputParser:
             self.parse()
 
     def parse(self):
+        print(self.raw_output)
         self.parsed_data['sat'] = 'UNSATISFIABLE' not in self.raw_output
 
         find = [('restarts', 'restarts'),

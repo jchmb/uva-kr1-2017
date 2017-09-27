@@ -23,6 +23,11 @@ class Sudoku3D:
                 for z in range(1, self.size + 1):
                     yield (x, y, z)
 
+    def getCellIterator(self):
+        return ((x, y, z) for x in range(1, self.size + 1)
+                for y in range(1, self.size + 1)
+                for z in range(1, self.size + 1))
+
     '''
     Check if the given cell (x, y, z) is filled.
     @param int x
@@ -69,11 +74,11 @@ class Sudoku3D:
     @param int z
     @param int d
     '''
-    def unfill(self, x, y, z, d):
+    def unfill(self, x, y, z):
         if self.isPresent(x, y, z):
             self.filledCells -= 1
             self.unfilledCells += 1
-            self.cells.pop[(x, y, z), None]
+            self.cells.pop((x, y, z), None)
 
     def ratioFilled(self):
         return self.filledCells / (self.filledCells + self.unfilledCells)

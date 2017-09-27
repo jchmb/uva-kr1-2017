@@ -1,59 +1,54 @@
 import random
 from sudoku3d import Sudoku3D
 
-'''
-Generator for Sudoku3D objects of size N*N*N.
-'''
-
 
 class Sudoku3DGenerator:
-    '''
-    Constructor.
-    @param int k the number of cells to fill randomly
-    @param int dim the dimensionality N of the Sudoku3D
-    '''
-    def __init__(self, k, size=9):
-        self.size = size
-        self.k = k
-        self.maxSize = size**3
+    def __init__(self, N, M):
+        self.N = N
+        self.M = M
 
-    '''
-    Fill a single cell with a random digit, with the constraint that it must
-    satisfy the Sudoku3D rules. Will try again if it fails, unless there are
-    no empty cells left.
-    '''
-    def fillCell(self):
-        if self.maxSize == self.sudoku.numberFilledCells():
-            raise Exception('Too many cells to fill')
+    def shift(self, base):
+        # Copy the original list (I know, the notation is weird).
+        perm = base[:]
+        # Pop and append the first element to the list.
+        perm.append(perm.pop(0))
+        return perm
 
-        (x, y, z) = self.sudoku.randomUnfilledPosition()
-        validValues = self.sudoku.validValuesForPosition(x, y, z)
+    def getBlock(self, blocks, number):
+        for block in blocks:
+            if block[0] == number:
+                return block
+        return None
 
-        if len(validValues) == 0:
-            return False
+    def deleteCells(self, sudoku):
+        cells = list(sudoku.getCellIterator())
+        for i in range(self.N**3 - self.M):
+            cell = random.choice(cells)
+            sudoku.unfill(*cell)
+            cells.remove(cell)
 
-        d = random.choice(validValues)
-        self.sudoku.fill(x, y, z, d)
-        return True
-
-    '''
-    Generate the Sudoku3D.
-    @return Sudoku3D
-    '''
-    def generate(self, maxTries=10000000):
-
-        tries = 1
-        while tries <= maxTries:
-            self.sudoku = Sudoku3D(size=self.size)
-            foundSudoku = True
-
-            for i in range(self.k):
-                res = self.fillCell()
-                if not res:
-                    foundSudoku = False
-                    tries += 1
-                    break
-
-            if foundSudoku:
-                return self.sudoku, tries
-        return None, None
+    def generate(self):
+        sudoku = Sudoku3D(self.N)
+        base = list(range(1, self.N + 1))
+        random.shuffle(base)
+        rows = []
+        perm = base
+        for i in range(1, self.N + 1):
+            rows.append(perm)
+            perm = self.shift(perm)
+        random.shuffle(rows)
+        baseBlock = list(range(1, self.N + 1))
+        random.shuffle(baseBlock)
+        blocks = []
+        block = baseBlock
+        for i in range(1, self.N + 1):
+            blocks.append(block)
+            block = self.shift(block)
+        for x in range(1, self.N + 1):
+            for y in range(1, self.N + 1):
+                block = self.getBlock(blocks, rows[x-1][y-1])
+                for z in range(1, self.N + 1):
+                    if not sudoku.fill(x, y, z, block[z-1]):
+                        pass
+        self.deleteCells(sudoku)
+        return sudoku
