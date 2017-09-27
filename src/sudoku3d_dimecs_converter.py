@@ -131,7 +131,6 @@ class SudokuDimecsConverter:
 
             for symbol in symbols:
                 match = re.match(r'p_(\d*)_(\d*)_(\d*)_(\d*)', symbol)
-                print(symbol)
                 (x, y, z, d) = match.groups()
                 self.su.fill(x, y, z, d)
 
