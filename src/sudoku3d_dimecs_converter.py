@@ -8,22 +8,23 @@ class SymbolConverter:
 
     def __init__(self):
         self.map = {}
+        self.map_rev = {}
         self.counter = 1
 
     def rev_convert(self, number_to_find):
         number_to_find_abs = abs(int(number_to_find))
-        for symbol, number in self.map.items():
-            if number == number_to_find_abs:
-                if int(number_to_find) > 0:
-                    return symbol
-                else:
-                    return '-' + symbol
+        if number_to_find_abs in self.map_rev:
+            if number_to_find < 0:
+                return '-' + self.map_rev[number_to_find_abs]
+            else:
+                return self.map_rev[number_to_find_abs]
 
     def convert(self, symbol):
         if symbol in self.map:
             return self.map[symbol]
         else:
             self.map[symbol] = self.counter
+            self.map_rev[self.counter] = symbol
             self.counter += 1
             return self.map[symbol]
 
@@ -106,7 +107,8 @@ class SudokuDimecsConverter:
         self.conv = SymbolConverter()
         self.su = sudoku
 
-    def convert(self):
+    def convert(self, smart=True):
+        self.smart = smart
         self.add_givens()
         self.add_at_least_one()
         self.add_at_most_one()
@@ -118,7 +120,7 @@ class SudokuDimecsConverter:
 
     def remap_solution(self, filename):
         with open(filename, 'r') as f:
-            # dirty trick, we only want the last line of file
+            # dirty trick, we only want the last line of the file
             for line in f:
                 pass
 
@@ -137,15 +139,32 @@ class SudokuDimecsConverter:
             symbol = self.conv.conv_pos_value(pos, value)
             self.dim.add_single_var(symbol, 'Given value')
 
+            if self.smart:
+                all_values = list(range(1, self.su.size+1))
+                all_values.remove(value)
+                for value in all_values:
+                    symbol = self.conv.conv_pos_value(pos, value)
+                    self.dim.add_single_var_neg(symbol)
+
     def add_at_least_one(self):
-        for pos in self.su.all_positions():
+        if self.smart:
+            positions = self.su.unfilledPositions()
+        else:
+            positions = self.su.all_positions()
+
+        for pos in positions:
             clause = []
             for d in range(1, self.su.size + 1):
                 clause.append(self.conv.conv_pos_value(pos, d))
             self.dim.add_clause(clause, 'at least one (%d, %d, %d)' % pos)
 
     def add_at_most_one(self):
-        for pos in self.su.all_positions():
+        if self.smart:
+            positions = self.su.unfilledPositions()
+        else:
+            positions = self.su.all_positions()
+
+        for pos in positions:
             for (d, e) in different_number_combinations(self.su.size):
                 clause = [-1 * self.conv.conv_pos_value(pos, d),
                           -1 * self.conv.conv_pos_value(pos, e)]
@@ -202,7 +221,7 @@ def TestSudokuDimecsConverter():
     sudoku = Sudoku3D(9)
 
     converter = SudokuDimecsConverter(sudoku)
-    dimecs = converter.convert()
+    dimecs = converter.convert(smart=False)
 
     assert dimecs.num_clauses() == 105705
     assert dimecs.num_vars() == 6561
@@ -211,5 +230,16 @@ def TestSudokuDimecsConverter():
     dimecs.get_dimecs_mapped(converter.conv, comments=False)
 
 
+def TestBigSudokuDimecsConverter():
+    sudoku = Sudoku3D(17)
+
+    converter = SudokuDimecsConverter(sudoku)
+    dimecs = converter.convert(smart=False)
+
+    dimecs.get_dimecs(comments=False)
+    dimecs.save('/tmp/17')
+    dimecs.get_dimecs_mapped(converter.conv, comments=False)
+
 # TestSymbolConverter()
 # TestSudokuDimecsConverter()
+# TestBigSudokuDimecsConverter()
