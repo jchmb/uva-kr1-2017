@@ -3,7 +3,8 @@ from sudoku3d import Sudoku3D
 
 
 size = 9
-k = size**3 - 1
+k = size**3 - 100
+# k = 20
 # k = int(size**3 / 2)
 gen = Sudoku3DAlternativeGenerator(size, k)#, 50, 1000)
 

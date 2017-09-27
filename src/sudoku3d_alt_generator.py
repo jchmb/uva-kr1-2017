@@ -20,6 +20,13 @@ class Sudoku3DAlternativeGenerator:
 				return block
 		return None
 
+	def deleteCells(self, sudoku):
+		cells = list(sudoku.getCellIterator())
+		for i in range(self.N**3 - self.M):
+			cell = random.choice(cells)
+			sudoku.cells[sudoku.getCellIndex(*cell)] = set(range(1, self.N + 1))
+			cells.remove(cell)
+
 	def generate(self):
 		sudoku = Sudoku3D(self.N)
 		base = list(range(1, self.N + 1))
@@ -43,4 +50,5 @@ class Sudoku3DAlternativeGenerator:
 				for z in range(self.N):
 					if not sudoku.fill(x, y, z, block[z]):
 						print(x,y,z,block)
+		self.deleteCells(sudoku)
 		return sudoku
