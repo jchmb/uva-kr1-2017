@@ -12,7 +12,8 @@ class SymbolConverter:
         self.counter = 1
 
     def rev_convert(self, number_to_find):
-        number_to_find_abs = abs(int(number_to_find))
+        number_to_find = int(number_to_find)
+        number_to_find_abs = abs(number_to_find)
         if number_to_find_abs in self.map_rev:
             if number_to_find < 0:
                 return '-' + self.map_rev[number_to_find_abs]
