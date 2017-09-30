@@ -47,7 +47,6 @@ class Sudoku3DAlternativeGenerator:
 			for y in range(self.N):
 				block = self.getBlock(blocks, rows[x][y])
 				for z in range(self.N):
-					if not sudoku.fill(x + 1, y + 1, z + 1, block[z]):
-						print(x,y,z,block)
+					sudoku.fill(x + 1, y + 1, z + 1, block[z])
 		self.deleteCells(sudoku)
 		return sudoku

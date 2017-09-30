@@ -2,6 +2,7 @@ import sys
 import csv
 import os
 import re
+import datetime
 from argparse import ArgumentParser
 from sudoku3d_alt_generator import Sudoku3DAlternativeGenerator
 from sudoku3d_dimecs_converter import SudokuDimecsConverter
@@ -47,7 +48,9 @@ field_names = ['N', 'M', 'k', 'smart', 'sat',
     'cpu_time', 'clauses', 'variables']
 solver = DimecsSolver(dimecs_directory)
 results = solver.solve_all_in_dir()
-with open('%s/results.csv' % (directory,), 'w') as f:
+mperc_str = "_".join(map(str, parsed_args.mperc))
+timestamp = datetime.datetime.now().strftime("%y%m%d%H%M%s")
+with open('%s/results_%s_%s_%s_%s_%s.csv' % (directory, parsed_args.nmin, parsed_args.nmax, mperc_str, parsed_args.k, timestamp), 'w') as f:
     writer = csv.DictWriter(f, field_names)
     writer.writeheader()
     for res in results:
@@ -56,5 +59,5 @@ with open('%s/results.csv' % (directory,), 'w') as f:
         line['N'] = int(match.group(1))
         line['M'] = int(match.group(2))
         line['k'] = int(match.group(3))
-        line['smart'] = bool(match.group(4))
+        line['smart'] = bool(int(match.group(4)))
         writer.writerow(line)
