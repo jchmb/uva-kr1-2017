@@ -3,15 +3,16 @@ import pprint
 import re
 from os import listdir
 from os.path import isfile, join
-
+from sudoku3d_dimecs_converter import SudokuDimecsConverter
 
 class DimecsSolver:
 
     def __init__(self, directory='../sudokus'):
         self.dir = directory
+        self.minisat_binary = '../externals/minisat/minisat_core'
 
     def solve_single(self, filename):
-        p = subprocess.Popen(['minisat %s/%s %s/out/%s' % (self.dir, filename,
+        p = subprocess.Popen(['%s %s/%s %s/out/%s' % (self.minisat_binary, self.dir, filename,
                              self.dir, filename)], shell=True,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output = p.communicate()
@@ -47,7 +48,7 @@ class DimecsSolverOutputParser:
             self.parse()
 
     def parse(self):
-        print(self.raw_output)
+        #print(self.raw_output)
         self.parsed_data['sat'] = 'UNSATISFIABLE' not in self.raw_output
 
         find = [('restarts', 'restarts'),

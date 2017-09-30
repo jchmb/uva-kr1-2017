@@ -1,3 +1,4 @@
 *.swp
 test_sudokus_dimecs/out/*
 sudokus_dimecs/out/*
+externals/minisat/CMakeFiles
