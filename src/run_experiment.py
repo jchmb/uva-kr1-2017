@@ -2,13 +2,23 @@ import sys
 import csv
 import os
 import re
+from argparse import ArgumentParser
 from sudoku3d_alt_generator import Sudoku3DAlternativeGenerator
 from sudoku3d_dimecs_converter import SudokuDimecsConverter
 from sudoku3d_dimecs_solver import DimecsSolver
 
-def parameter_iterator(min_N, max_N, min_M, max_M):
+# Parse args
+argparser = ArgumentParser(description='Run some experiments on some N*N*N 3D sudokus')
+argparser.add_argument('nmin', type=int, help='Minimum value for N')
+argparser.add_argument('nmax', type=int, help='Maximum value for N')
+argparser.add_argument('mperc', type=int, nargs='+', help='Set of percentages of filled cells')
+argparser.add_argument('--k', type=int, default=1, help='Number of repetitions for each parameter setting')
+parsed_args = argparser.parse_args()
+
+def parameter_iterator(min_N, max_N, percentages_M):
     for N in range(min_N, max_N + 1):
-        for M in range(min_M, max_M + 1):
+        for percentage_M in percentages_M:
+            M = int((float(percentage_M) / 100.0) * (N**3))
             yield (N, M)
 
 # Define directories
@@ -20,12 +30,8 @@ if not os.path.exists(dimecs_directory):
     os.makedirs(dimecs_directory)
     os.makedirs('%s/%s' % (dimecs_directory, 'out'))
 
-num_experiments = int(sys.argv[1])
-min_N = int(sys.argv[2])
-max_N = int(sys.argv[3])
-min_M = int(sys.argv[4])
-max_M = int(sys.argv[5])
-for N, M in parameter_iterator(min_N, max_N, min_M, max_M):
+num_experiments = parsed_args.k
+for N, M in parameter_iterator(parsed_args.nmin, parsed_args.nmax, parsed_args.mperc):
     gen = Sudoku3DAlternativeGenerator(N, M)
     for i in range(num_experiments):
         sudoku = gen.generate()
