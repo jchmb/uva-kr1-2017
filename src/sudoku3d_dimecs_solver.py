@@ -3,20 +3,28 @@ import pprint
 import re
 from os import listdir
 from os.path import isfile, join
-from sudoku3d_dimecs_converter import SudokuDimecsConverter
+
 
 class DimecsSolver:
 
     def __init__(self, directory='../sudokus'):
         self.dir = directory
         self.minisat_binary = '../externals/minisat/minisat_core'
+        self.timeout = 5
 
     def solve_single(self, filename):
-        p = subprocess.Popen(['%s %s/%s %s/out/%s' % (self.minisat_binary, self.dir, filename,
-                             self.dir, filename)], shell=True,
+        p = subprocess.Popen(['timeout %d %s %s/%s %s/out/%s' %
+                             (self.timeout, self.minisat_binary, self.dir,
+                              filename, self.dir, filename)], shell=True,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
         output = p.communicate()
         output = output[0].decode('ascii')
+        if not output:
+            res = DimecsSolverOutputParser(filename, output, False)
+            res.timeout = True
+            return res
+
         return DimecsSolverOutputParser(filename, output)
 
     def solve_multiple(self, filenames):
@@ -36,8 +44,9 @@ class DimecsSolver:
 
 class DimecsSolverOutputParser:
 
-    def __init__(self, name, output):
-        self.reset(name, output)
+    def __init__(self, name, output, parse=True):
+        self.reset(name, output, parse)
+        self.timeout = False
 
     def reset(self, name, output, parse=True):
         self.raw_output = output
@@ -48,7 +57,6 @@ class DimecsSolverOutputParser:
             self.parse()
 
     def parse(self):
-        #print(self.raw_output)
         self.parsed_data['sat'] = 'UNSATISFIABLE' not in self.raw_output
 
         find = [('restarts', 'restarts'),

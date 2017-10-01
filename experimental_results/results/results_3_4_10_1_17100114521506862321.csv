@@ -1,0 +1,5 @@
+N,M,k,smart,sat,restarts,conflicts,decisions,conflict_literals,propagations,cpu_time,clauses,variables,timeout
+4,6,0,False,True,1,3,13,8,383,0.0,2133,256,False
+3,2,0,True,True,1,0,4,0,81,0.0,283,81,False
+3,2,0,False,True,1,0,4,0,81,0.0,530,81,False
+4,6,0,True,True,1,3,13,8,383,0.0,1194,256,False
