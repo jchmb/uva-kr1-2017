@@ -131,7 +131,7 @@ University of Amsterdam \\ % Your institution for the title page
 \begin{frame}
 \frametitle{Hypothesis}
 \begin{itemize}
-	\item The hypothesis of this paper can be formulated as follows. Given is a 3D Sudoku of size $N$ with $M$ filled cells. As $N$ grows, the complexity (i.e., the CPU time, restarts, decisions and conflicts) grows and the ratio of $\frac{M}{N}$ must increase in order for the 3D Sudoku to be satisfiable in reasonable time.
+	\item The hypothesis of this paper can be formulated as follows. Given is a 3D Sudoku of size $N$ with $M$ filled cells. As $N$ grows, the complexity (i.e., the CPU time, restarts, decisions and conflicts) grows and the relative number of givens in proportion to $N$ must increase in order for the 3D Sudoku to be tractable.
 \end{itemize}
 \end{frame}
 
@@ -139,22 +139,43 @@ University of Amsterdam \\ % Your institution for the title page
 \begin{frame}
 \frametitle{Experimental Setup}
 \begin{itemize}
- \item ....
+ \item Encoding adapted from Weber.
+ \item Dataset generated with custom written 3D Sudoku generator using Freek's Algorithm.
+ \item Since Freek's Algorithm generates a complete 3D sudoku, erase $N^3 - M$ cells in order to obtain the required $M$ filled cells.
+ \item Convert the 3D Sudoku constraints to DIMACS CNF and give it to Minisat, which attempts to find a model that satisfies the constraints.
+ \item Generate, convert, and solve 3D Sudokus for a range of parameters $(N \in \{3, \hdots, 15\}, M:N^3 = \{.1, .2, .3, \hdots, .8, .9\}, k = 5)$, where $k$ is the number of repetitions. Take the means of the results for each $(N, M)$ tuple.
+\end{itemize}
+\end{frame}
+
+\section{Results}
+\begin{frame}{Results}
+    \begin{table}[]
+\centering
+\begin{tabular}{@{}l|lllllllllllll@{}}
+\toprule
+N & 3  & 4  & 5  & 6  & 7  & 8  & 9  & 10 & 11 & 12 & 13 & 14 & 15 \\ \midrule
+$M_{low}$                      & \textbf{10} & \textbf{30} & \textbf{10} & \textbf{20} & \textbf{20} & 20 & \textbf{30} & \textbf{30} & 30 & 30 & 30 & 30 & 30 \\
+$M_{up}$                       & 20 & 40 & 20 & 30 & 30 & \textbf{30} & 40 & 40 & 40 & 40 & \textbf{40} & \textbf{40} & \textbf{40}  
+\end{tabular}
+\caption{Different size of puzzles and the estimated interval (lower- and upperbound) for the percentage of givens needed to find a solution. A bold digit indicates that the estimate is closer to that percentage.}
+\label{tab_res_sum}
+\end{table}
+\end{frame}
+
+\section{Conclusion \& Further Work}
+\begin{frame}{Conclusion \& Further Work}
+\begin{itemize}
+    \item As it turns out, the relative number of givens $M : N^3$ required for the 3D Sudoku to be tractable (and deterministic) increases as $N$ grows.
+    \item Further work
+        \begin{itemize}
+            \item Could consist of pinpointing the exact value of $M$ for each $N$.
+            \item Different methods of generating 3D Sudokus?
+            \item How does this generalize to $n$-D Sudokus?
+        \end{itemize}
 \end{itemize}
 \end{frame}
 
 %------------------------------------------------
-
-\begin{frame}
-\frametitle{References}
-\footnotesize{
-\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
-\bibitem[Smith, 2012]{p1} John Smith (2012)
-\newblock Title of the publication
-\newblock \emph{Journal Name} 12(3), 45 -- 678.
-\end{thebibliography}
-}
-\end{frame}
 
 %------------------------------------------------
 
