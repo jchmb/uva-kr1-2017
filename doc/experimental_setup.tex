@@ -1,10 +1,32 @@
 \section{Experimental Setup}
+
+In order to solve 3D Sudokus of arbitrary size, it was first necessary to write a generator that could generate a 3D Sudoku given parameters $N \in \mathbb{N}, M \in \mathbb{N}$, where $N$ is the size of the 3D Sudoku in each dimension and $M$ is the number of filled cells, with $M \leq N^3$ (since there cannot be more filled cells than there are cells). Due to its rapid prototyping capabilities, Python was used as the programming language of choice.
+
+% TODO: describe generation process
+
+The next step was to write a converter that could convert the 3D Sudoku's constraints to the DIMACS CNF format. Minisat was used to find a model that satisfies the given constraints in DIMACS\footnote{\url{http://minisat.se/}}.
+
+Finally, the main experiment used both the generator and the converter to iterate over a given parameter range $N_{\min}, N_{\max}, M_1, \hdots, M_t, k$, where $N_{\min}$ is the minimum value for $N$, $N_{\max}$ is the maximum value for $N$, $M_1, \hdots, M_t$ are the ratios of $M$ in proportion to $N$, and $k$ is the number of repetitions for increased statistical reliability. 
+
+The mean and standard deviation were then calculated with respect to $(N, M)$ over $k$ 3D Sudokus. Due to the limited time available and limited computational power, the parameter range was somewhat narrow. The following parameter values were used: $N_{\min} = 3, N_{\max} = 15, M_1 = .1, M_2 = .2, \hdots, M_9 = .9, k = 5$.
+
+The code for the experiments (as well as the data of the results) can be found at our Github repository\footnote{\url{https://github.com/jchmb/uva-kr1-2017}}. 
+
 % how do we measure complexity
 % what software do we use, completely describe all the tools and procedures
 % maybe insert figure from Finns paper
 
-\subsection{Dataset}
+%\subsection{Dataset}
 % exlain we needed to write our own algorithm to generate 3d sudoku's of different sizes
+
+\section{Results}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.9\textwidth]{cpu_time}
+  \label{fig_cpu_time}
+  \caption{CPU time for each $M$ wrt $N$}
+\end{figure}
 
 \begin{landscape}
 \begin{small}
