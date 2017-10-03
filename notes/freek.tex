@@ -7,11 +7,31 @@
 \addbibresource{refs.bib}
 \graphicspath{ {plots/} }
 
-\title{notes}
-\author{Freek Boutkan}
-\date{October 2017}
-
 \begin{document}
+
+% Uva Logo
+% some lines to make it look better
+\begin{center}
+  \Large{SAT solutions for 3D Sudoku's}\\
+  \vspace{.5cm}
+  \small{Freek Boutkan \hspace{1.5cm} Jochem\\
+  10004616 \hspace{1.5cm} 10004616}
+\end{center}
+
+\begin{abstract}
+  we did some research
+\end{abstract}
+
+\section{3D Sudoku's}
+% defintions
+% rules
+% why interesting
+% hypothesis
+% maybe add image of 3D sudoku
+
+A 3D Sudoku is a Sudoku of size $N \times N \times N$. It consists of rows, columns, and layers, which are sequences of cells spanning across a single dimension. Similar to the 2D Sudoku, each row, column, and layer must contain every number $d \in \{1, \hdots, N\}$ exactly once. In contrast to 2D Sudokus, the constraint that every number must also appear exactly once in each block is dropped for the 3D Sudoku. 
+
+
 
 \section{Encoding}
 Since symbols in propositional logic can only be true or false it is not possible to encode the number of a cell with a single symbol. For a $N$ sized sudoku there are $N$ different posible digits for each cell. Thus for a single cell $N$ different symbols are needed. In this paper the sentence 'Position $x$, $y$, $z$ contains a $d$' is encoded as follows:
@@ -51,6 +71,30 @@ For each of the $N^3$ cells an 'At least one` and an 'At most one` clause is nee
   \label{fig_dimecs_props}
   \caption{Properties of DIMECS encoding}
 \end{figure}
+
+\section{Experimental Setup}
+% how do we measure complexity
+% what software do we use, completely describe all the tools and procedures
+% maybe insert figure from Finns paper
+
+\subsection{Dataset}
+% exlain we needed to write our own algorithm to generate 3d sudoku's of different sizes
+
+\section{Results}
+% tabel with all avg/stddev 
+% heatmap
+% some plots
+
+\section{Analysis}
+% differenses Smart vs NotSmorrt
+% explain how low/hight M/N influences complexity
+% how do the results accept/reject our hypotheses
+
+
+\section{Conclusion and Future Work}
+% Now tthat the experiment is done: did the hpyotheses make any sense, is it meaning full
+% possible future work: investige exact M/N ratio for different size, can this research be generalized to n-Dimensional sudoku;s
+
 
 \printbibliography
 
