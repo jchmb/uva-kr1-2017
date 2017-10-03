@@ -1,9 +1,27 @@
 \section{Experimental Setup}
+
+In order to solve 3D Sudokus of arbitrary size, it was first necessary to write a generator that could generate a 3D Sudoku given parameters $N \in \mathbb{N}, M \in \mathbb{N}$, where $N$ is the size of the 3D Sudoku in each dimension and $M$ is the number of filled cells, with $M \leq N^3$ (since there cannot be more filled cells than there are cells). Due to its rapid prototyping capabilities, Python was used as the programming language of choice.
+
+% TODO: describe generation process
+
+The next step was to write a converter that could convert the 3D Sudoku's constraints to the DIMACS CNF format. Minisat was used to find a model that satisfies the given constraints in DIMACS\footnote{\url{http://minisat.se/}}. If Minisat did not report a solution within 10 seconds the solver was aborted and a timeout was reported. The 10 second timeout was determined by trail and error. We found that if a puzzle is solvable a solution was reported within a second. The timeout was increased to 10 seconds to account for possible background processes running on the computer.
+
+Finally, the main experiment used both the generator and the converter to iterate over a given parameter range $N_{\min}, N_{\max}, M_1, \hdots, M_t, k$, where $N_{\min}$ is the minimum value for $N$, $N_{\max}$ is the maximum value for $N$, $M_1, \hdots, M_t$ are the ratios of $M$ in proportion to $N$, and $k$ is the number of repetitions for increased statistical reliability. 
+
+The mean and standard deviation were then calculated with respect to $(N, M)$ over $k$ 3D Sudokus. Due to the limited time available and limited computational power, the parameter range was somewhat narrow. The following parameter values were used: $N_{\min} = 3, N_{\max} = 15, M_1 = .1, M_2 = .2, \hdots, M_9 = .9, k = 5$.
+
+The code for the experiments (as well as the data of the results) can be found at our Github repository\footnote{\url{https://github.com/jchmb/uva-kr1-2017}}. 
+
+\subsection{Givens needed for a solution}
+Minisat reports several statistics that can be used for analysis, specifically of interest are the number of decisions and conflicts reported by minisat. When the SAT solver can no longer interfere more information from the clause it has to make a decision, an (educated) guess. This means the sudoku is not deterministic. After the guess one of two things can happen, a solution is found or a conflic is found. If a conflic is found the algorithm backtracks to a previous point and continues from there, adding the negation of the conflict to the list of clauses.
+A non zero number of conflicts or a non 1 number of decisions thus indicates a puzzle is not deterministically solvable. Note that averaged number of conflicts/decision does not provide the guarenteed minimum number of givens needed to solve a matrix because only a fraction of the total number of possible sudoku's is tested, however if a the average is taken over a large number of puzzles it gives an indication of how many givens are needed for a solution.
+
+
 % how do we measure complexity
 % what software do we use, completely describe all the tools and procedures
 % maybe insert figure from Finns paper
 
-\subsection{Dataset}
+%\subsection{Dataset}
 % exlain we needed to write our own algorithm to generate 3d sudoku's of different sizes
 
 
