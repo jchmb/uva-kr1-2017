@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Make sure that zlib is installed."
+git submodule update --init --recursive
+cd externals/minisat
+cmake .
+make
