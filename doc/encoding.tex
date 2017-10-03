@@ -19,8 +19,11 @@ We have adopted Webers \cite{weber2005sat} encoding for this experiment. Webers 
     \end{align}
 \end{enumerate}
 
-\subsection{Number of clauses}
-For each of the $N^3$ cells an 'At least one` and an 'At most one` clause is needed. Also for each dimension (row/column/layer) $N^2$ valid clauses are needed. Given an empty 3D sudoku of size $N$ the number of clauses $c$ needed to represent the puzzle is given by \ref{eq_clauses} and the average length of the clauses by \ref{eq_clauses_avg_length}. Since most of clauses are of length two the average length of the clause decreases as N grows and , as can be seen in figure \ref{fig_dimecs_props}.
+\subsection{Number of clauses and average length}
+For each of the $N^3$ cells an 'At least one` and an 'At most one` clause is needed. Also for each dimension (row/column/layer) $N^2$ valid clauses are needed. Given an empty 3D sudoku of size $N$ the number of clauses $c$ needed to represent the puzzle is given by equation \ref{eq_clauses} and the average length of the clauses by equation \ref{eq_clauses_avg_length}. Since most of clauses are of length two the average length of the clause decreases as N grows, as can be seen in figure \ref{fig_dimecs_props}. As N increases the number of binary clauses becomes bigger. For a large $N$ the average length approximates 2, but the distribution of the clause lenghts is very uneven. The length of the clauses can be relevant for SAT solvers since 2-SAT problems can be solved in polynomial time and this is also the case for some close to 2-SAT problems.
+
+\subsection{Givens}
+All the given (prefilled) cells can simply be added to the list of clauses. For those cells 'at least one` and 'at most one` clauses are not necessary as long as the negation for all the other number in the same cell are also added. This reduces the number of clauses needed to describe the puzzle drastically, espcially for bigger puzzles with a high number of givens. For this paper both encodings are implemented and tested. The more sophisticated encoding method is referred to as smart and the more naive encoding is referred to as not smart.
 \begin{align}
   \label{eq_clauses}
   c(N) = N^3 + N^3 \sum_{n=1}^{N-1}n + 3N^3\sum_{n=1}^{N-1}n = N^3(1 + 4\sum_{n=1}^{N-1}n)
@@ -32,7 +35,8 @@ For each of the $N^3$ cells an 'At least one` and an 'At most one` clause is nee
 
 \begin{figure}
   \centering
-  \includegraphics[width=.9\textwidth]{dimecs_props}
   \label{fig_dimecs_props}
+  \includegraphics[width=.6\textwidth]{dimecs_props}
+  
   \caption{Properties of DIMECS encoding}
 \end{figure}

@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
+\usepackage[page]{appendix}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{lscape}
@@ -7,19 +8,21 @@
 \usepackage{longtable}
 \usepackage{geometry}
 \usepackage{mathtools,amsmath,amsfonts}
+\usepackage{subcaption}
+\usepackage{wrapfig}
 
 \addbibresource{refs.bib}
 \graphicspath{ {plots/} }
-\geometry{margin=1in}
 
 
-\begin{document}
+\begin{document}	
 
 \begin{center}
-\Large{SAT solutions for 3D Sudokus}\\
-\vspace{.5cm}
-\small{Freek Boutkan \hspace{1.5cm} Jochem Barelds\\
-10004616 \hspace{1.5cm} 5795567}
+\rule{\textwidth}{.4pt}
+\Large{SAT solutions for 3D Sudokus\\\vspace{.2cm}}
+\rule{\textwidth}{.8pt}
+
+\small{Freek Boutkan 10004616\\Jochem Barelds 5795567}
 \end{center}
 
 \input{abstract}
@@ -38,6 +41,9 @@
 \input{analysis}
 
 \input{conclusion}
+
+\input{appendices}
+
 
 \printbibliography
 
