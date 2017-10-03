@@ -1,11 +1,20 @@
 import random
 from sudoku3d import Sudoku3D
 
+'''
+@class Sudoku3DAlternativeGenerator
+Alternative generator for Sudoku3D objects of size N*N*N where M cells are filled.
+'''
 class Sudoku3DAlternativeGenerator:
 	def __init__(self, N, M):
 		self.N = N
 		self.M = M
 
+    '''
+    Shift the sequence one to the right. The last element will appear at the start.
+    @param list<int> base
+    @return list<int>
+    '''
 	def shift(self, base):
 		# Copy the original list (I know, the notation is weird).
 		perm = base[:]
@@ -13,12 +22,22 @@ class Sudoku3DAlternativeGenerator:
 		perm.append(perm.pop(0))
 		return perm
 
+    '''
+    Get the block given a list of blocks and a block number.
+    @param list<list<int>> blocks
+    @param int number
+    @return list<int>|None
+    '''
 	def getBlock(self, blocks, number):
 		for block in blocks:
 			if block[0] == number:
 				return block
 		return None
 
+    '''
+    Delete N**3 - M cells for the given Sudoku3D.
+    @param Sudoku3D sudoku
+    '''
 	def deleteCells(self, sudoku):
 		cells = list(sudoku.getCellIterator())
 		for i in range(self.N**3 - self.M):
@@ -26,6 +45,10 @@ class Sudoku3DAlternativeGenerator:
 			del sudoku.cells[cell]
 			cells.remove(cell)
 
+    '''
+    Generate the Sudoku3D.
+    @return Sudoku3D
+    '''
 	def generate(self):
 		sudoku = Sudoku3D(self.N)
 		base = list(range(1, self.N + 1))

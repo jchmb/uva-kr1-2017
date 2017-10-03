@@ -21,4 +21,3 @@ data_x, data_y = compute_plot_data(aggregate, plot_name)
 ylim_min = args.ylim_min if hasattr(args, 'ylim_min') else None
 ylim_max = args.ylim_max if hasattr(args, 'ylim_max') else None
 draw_plot(data_x, data_y, plot_name, ylim_min, ylim_max, True)
-# fig.savefig('doc/plots/%s.png' % (plot_name,))

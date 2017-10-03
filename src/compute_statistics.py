@@ -2,10 +2,23 @@ import csv
 import statistics
 from collections import defaultdict
 
+'''
+@typedef dict<str, dict<(int, int, bool), dict<str, float>>> Aggregate
+'''
+
+'''
+Get the relevant output variables.
+@return list<string>
+'''
 def get_output_variables():
     return ['restarts', 'conflicts', 'decisions', 'conflict_literals',
         'propagations', 'cpu_time', 'clauses', 'variables']
 
+'''
+Aggregate the statistics from the given CSV file.
+@param str filename
+@return Aggregate grouped results
+'''
 def aggregate_statistics(filename):
     percentages = list(range(10, 100, 10))
 
@@ -35,6 +48,11 @@ def aggregate_statistics(filename):
                 aggregate[name][param_setting] = calc
     return aggregate
 
+'''
+Compute the plot data from an aggregate of statistics.
+@param Aggregate aggregate
+@param str plot_name
+'''
 def compute_plot_data(aggregate, plot_name):
     data_x = {True: defaultdict(list), False: defaultdict(list)}
     data_y = {True: defaultdict(list), False: defaultdict(list)}
