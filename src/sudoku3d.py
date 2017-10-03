@@ -23,6 +23,10 @@ class Sudoku3D:
                 for z in range(1, self.size + 1):
                     yield (x, y, z)
 
+    '''
+    Get the cell iterator, that iterates over all cells in the Sudoku3D.
+    @return iterable<(int, int, int)>
+    '''
     def getCellIterator(self):
         return ((x, y, z) for x in range(1, self.size + 1)
                 for y in range(1, self.size + 1)
@@ -92,6 +96,10 @@ class Sudoku3D:
     def filledPositions(self):
         return self.cells.keys()
 
+    '''
+    Get the unfilled positions.
+    @return list<(int, int, int)>
+    '''
     def unfilledPositions(self):
         unfilledPositions = []
         for x in range(1, self.size + 1):
